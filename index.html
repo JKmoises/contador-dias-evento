@@ -14,7 +14,27 @@
     <title>Contador de dias para un evento</title>
   </head>
   <body>
-    <main class="container section">
+    <main class="container section app">
+      <section class="card-container">
+        <h1 class="text-center">Contador de dias de un evento</h1>
+
+        <form class="card box-shadow-1">
+          <input type="text" id="evento" placeholder="Ingresa el evento">
+
+          <input type="date" id="fecha">
+
+          <input class="btn" type="button" value="Añadir evento">
+        </form>
+      
+      </section>
+
+      <section class="eventos-container">
+        <h2 class="text-left text-lg-center">Eventos</h2>
+
+        <ul id="eventos" class="eventos box-shadow-1">
+          <li>No hay eventos por el momento</li>
+        </ul>
+      </section>
       
     </main>
 

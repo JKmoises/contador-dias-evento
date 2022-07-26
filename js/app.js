@@ -1,5 +1,7 @@
-document.addEventListener('DOMContentLoaded', iniciarApp);
+document.addEventListener('DOMContentLoaded', startApp);
 
-function iniciarApp(){
-  
+function startApp(){
+
 }
+
+
