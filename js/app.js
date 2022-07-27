@@ -52,7 +52,6 @@ function createEvent(){
 
 function addEvent(){
   events = [...events, eventTemplate];
-  console.log(events);
   cleanEventTemplate();
 }
 
@@ -69,7 +68,7 @@ function renderEvent() {
     const $liContainer = document.createElement('li');
 
     const $spanOfDays = document.createElement('span');
-    $spanOfDays.innerHTML = /*html*/`${days} <span>dias</span>`;
+    $spanOfDays.innerHTML = /*html*/`${days} <span>días</span>`;
     $spanOfDays.classList.add('dias-faltantes');
     $liContainer.appendChild($spanOfDays);
     
