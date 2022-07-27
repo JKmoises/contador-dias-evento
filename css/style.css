@@ -51,6 +51,11 @@ a:hover {
   opacity: 0.75;
 }
 
+button:hover,
+input[type="button"]:hover {
+  cursor: pointer;
+}
+
 h1 {
   margin: 0;
   font-size: 2rem;
@@ -98,7 +103,7 @@ p {
 
 .btn {
   border-radius: .3rem;
-  padding: 1rem !important;
+  padding: 1rem;
   display: inline-block;
   font-weight: bold;
   text-align: center;
@@ -226,25 +231,25 @@ p {
   background-color: var(--white-color);
 }
 
-.card>input {
+.card > input {
   width: 100%;
-  padding: .5rem 1rem;
   font-size: 1rem;
   outline: 0;
   font-family: var(--font);
 }
 
 .card>input:not(.btn) {
+  padding: .5rem 1rem;
   border: none;
   border-bottom: thin solid var(--gray-dark-color);
 }
 
-.card>.btn{
+.card>.btn,
+.btn-eliminar {
   transition: all .5s ease-in-out;
 }
 
 .card>.btn:hover{
-  cursor: pointer;
   background-color: var(--second-alpha-color);
 }
 
@@ -259,6 +264,7 @@ p {
   background-color: var(--white-color);
   margin: 0;
   list-style: none;
+  border-radius: .5rem;
 }
 
 .eventos-container h2 {
@@ -267,11 +273,23 @@ p {
 
 .eventos li{
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
   width: 100%;
   border: thin solid var(--third-alpha-color);
   padding: 1rem;
+}
+
+.eventos li > *{
+  border-bottom: thin solid var(--first-color);
+  width: 100%;
+  text-align: center;
+}
+
+.eventos li > *:not(.btn){
+  padding-bottom: .5rem;
 }
 
 .eventos > .default{
@@ -304,6 +322,14 @@ p {
   font-weight: 400;
 }
 
+.btn-eliminar{
+  background-color: var(--third-color);
+}
+
+.btn-eliminar:hover{
+  background-color: var(--third-alpha-color);
+}
+
 
 
 @media screen and (min-width: 768px) {
@@ -315,5 +341,22 @@ p {
 
   .card>input {
     font-size: 1.5rem;
+  }
+
+  .eventos li{
+    flex-direction: row;
+  }
+
+  .eventos li > *{
+    border-bottom: none;
+    width: auto;
+  }
+
+  .eventos li>*:not(.btn) {
+    padding-bottom: 0;
+  }
+
+  .btn-eliminar{
+    width: 20% !important;
   }
 }

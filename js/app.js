@@ -61,7 +61,6 @@ function renderEvent() {
 
   cleanHTML();
 
-
   events.forEach(event => {
     let { days, name, date } = event;
 
@@ -81,10 +80,17 @@ function renderEvent() {
     $spanOfDate.textContent = date;
     $spanOfDate.classList.add('fecha');
     $liContainer.appendChild($spanOfDate);
+
+    const $btnDelete = document.createElement('button');
+    $btnDelete.textContent = 'Eliminar';
+    $btnDelete.classList.add('btn','btn-eliminar');
+    $liContainer.appendChild($btnDelete);
     
-    $eventsContainer.appendChild($liContainer);
+    $fragment.appendChild($liContainer);
     
   });
+
+  $eventsContainer.appendChild($fragment);
 }
 
 
