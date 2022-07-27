@@ -178,6 +178,10 @@ p {
   word-spacing: .5rem;
 }
 
+.eventos-container h2{
+  text-transform: initial;
+}
+
 .eventos-container h2,
 .card,
 .eventos{
@@ -229,9 +233,9 @@ p {
   list-style: none;
 }
 
-.eventos li{
+/* .eventos li{
   
-}
+} */
 
 .eventos-container h2 {
   color: var(--gray-light-color);
