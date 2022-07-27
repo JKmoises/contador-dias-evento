@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', startApp);
 
 const $eventsContainer = document.querySelector('#eventos');
+const $inputEventName = document.querySelector('#nombre-evento');
+const $inputEventDate = document.querySelector('#fecha');
 const $fragment = document.createDocumentFragment();
 
 let events = [];
@@ -17,28 +19,32 @@ function startApp() {
   createEvent();
 }
 
-function createEvent(){
-  const $btnEvent = document.querySelector('#btn-evento');
-  const $liDefault = document.querySelector('.eventos > .default');
-  
-  $btnEvent.addEventListener('click', e => {
+function eventValidation(){
+  if ($inputEventName.value === '' && $inputEventDate.value === '') {
+    showAlert('Todos los campos estan vacíos, vuelve a ingresar', '#card');
+  } else if ($inputEventName.value === '') {
+    showAlert('El campo de nombre del evento está vacío', '#card');
+  } else if ($inputEventDate.value === '') {
+    showAlert('El campo de la fecha del evento está vacío', '#card');
+  } else {
     cleanInputs();
     addEvent();
-    
-    if ($eventsContainer.contains($liDefault)) $liDefault.remove();
-      
     renderEvent();
+  }
+}
+
+function createEvent(){
+  const $btnEvent = document.querySelector('#btn-evento');
+  
+  $btnEvent.addEventListener('click', e => {
+    eventValidation();
   });
 
   document.addEventListener('keydown', e => {
     if (e.key !== 'Enter') return;
     e.preventDefault();
 
-    cleanInputs();
-    addEvent();
-
-
-    renderEvent();
+    eventValidation();
 
   });
 
@@ -51,7 +57,12 @@ function addEvent(){
 }
 
 function renderEvent() {
+  const $liDefault = document.querySelector('.eventos > .default');
+  if ($eventsContainer.contains($liDefault)) $liDefault.remove();
+
   cleanHTML();
+
+
   events.forEach(event => {
     let { days, name, date } = event;
 
@@ -99,6 +110,26 @@ function saveInputData(element = '',dataTosave = '') {
   });
 }
 
+function showAlert(mensaje = '', elemento = '', tipo = 'error', desaparece = true) {
+  //? Previniendo que se genera más de una alerta de error
+  const alertaPrevia = document.querySelector(".alerta");
+  if (alertaPrevia) alertaPrevia.remove(); 
+  
+  //? Scripting para crear la alerta
+  const alerta = document.createElement("div");
+  alerta.textContent = mensaje;
+  alerta.classList.add("alerta", tipo);
+  
+  const referencia = document.querySelector(elemento);
+  referencia.insertAdjacentElement('afterbegin',alerta);
+
+  if (desaparece) {
+    setTimeout(() => {
+      referencia.removeChild(alerta);
+    }, 3000);
+  }
+}
+
 function cleanEventTemplate(){
   eventTemplate = {
     days: '20',
@@ -114,9 +145,6 @@ function cleanHTML(){
 }
 
 function cleanInputs(){
-  const $inputEventName = document.querySelector('#nombre-evento');
-  const $inputEventDate = document.querySelector('#fecha');
-
   $inputEventName.value = '';
   $inputEventDate.value = '';
 }

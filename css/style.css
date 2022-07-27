@@ -8,6 +8,8 @@
   --third-color: #501464;
   --third-alpha-color: rgba(80, 20, 100, 0.75);
   --white-color: #FFFFFF;
+  --red-color: #dc3545;
+  --green-color: #198754;
   --gray-light-color: #F3F3F3;
   --gray-color: #CCCCCC;
   --gray-dark-color: #666666;
@@ -133,6 +135,27 @@ p {
   text-align: right;
 }
 
+.alerta {
+  padding: 1rem;
+  color: var(--white-color);
+  width: 100%;
+  display: block;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 1.5vw;
+
+}
+
+.alerta.error {
+  background-color: var(--red-color);
+}
+
+.alerta.exito {
+  background-color: var(--green-color);
+}
+
 @media screen and (min-width: 1024px) {
   .full-lg-screen {
     width: 100%;
@@ -255,6 +278,7 @@ p {
   text-align: center;
   display: block;
   border: none;
+  padding: 0;
   
 }
 
