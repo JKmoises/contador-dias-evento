@@ -182,10 +182,15 @@ p {
   text-transform: initial;
 }
 
+
 .eventos-container h2,
-.card,
 .eventos{
+  width: 80%;
+}
+
+.card{
   width: 60%;
+
 }
 
 .card,
@@ -233,19 +238,53 @@ p {
   list-style: none;
 }
 
-/* .eventos li{
-  
-} */
-
 .eventos-container h2 {
   color: var(--gray-light-color);
 }
 
+.eventos li{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border: thin solid var(--third-alpha-color);
+  padding: 1rem;
+}
+
+.eventos > .default{
+  text-align: center;
+  display: block;
+  border: none;
+  
+}
+
+.dias-faltantes{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 3.5vw;
+  font-weight: 900;
+}
+
+.dias-faltantes > span{
+  font-size: 1.5vw;
+  color: var(--third-color);
+  
+}
+
+.nombre{
+  font-weight: 300;
+}
+
+.fecha{
+  font-weight: 400;
+}
+
+
 
 @media screen and (min-width: 768px) {
 
-  .card>.btn,
-  .eventos li {
+  .card>.btn {
     font-size: 1.5vw;
 
   }
