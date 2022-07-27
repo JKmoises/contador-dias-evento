@@ -8,6 +8,7 @@ const $fragment = document.createDocumentFragment();
 let events = [];
 
 let eventTemplate = {
+  id: '',
   days: '20',
   name: '',
   date: '',
@@ -56,13 +57,14 @@ function addEvent(){
 }
 
 function renderEvent() {
-  const $liDefault = document.querySelector('.eventos > .default');
-  if ($eventsContainer.contains($liDefault)) $liDefault.remove();
-
   cleanHTML();
 
-  events.forEach(event => {
-    let { days, name, date } = event;
+  showDefaultMessage();
+
+  events.forEach((event, i) => {
+    event.id = i + 1;
+
+    let { id, days, name, date } = event;
 
     const $liContainer = document.createElement('li');
 
@@ -83,14 +85,25 @@ function renderEvent() {
 
     const $btnDelete = document.createElement('button');
     $btnDelete.textContent = 'Eliminar';
-    $btnDelete.classList.add('btn','btn-eliminar');
+    $btnDelete.classList.add('btn', 'btn-eliminar');
+    $btnDelete.onclick = (e) => deleteEvent(e);
     $liContainer.appendChild($btnDelete);
+
+    $liContainer.dataset.eventId = id;
     
     $fragment.appendChild($liContainer);
     
   });
 
   $eventsContainer.appendChild($fragment);
+}
+
+function deleteEvent(e) {
+  const eventId = parseInt(e.target.parentElement.dataset.eventId);
+  events = events.filter(event => event.id !== eventId);
+
+
+  renderEvent();
 }
 
 
@@ -103,6 +116,15 @@ function addEventInfo() {
   saveInputData('#fecha', 'date');
   saveEventDays();
   
+}
+
+function showDefaultMessage(){
+
+  if (events.length === 0) {
+    $eventsContainer.innerHTML = /*html*/`
+      <li class="default">No hay eventos hasta el momento, ingrese uno</li>
+    `;
+  }
 }
 
 function saveInputData(element = '',dataTosave = '') {
@@ -137,6 +159,7 @@ function showAlert(mensaje = '', elemento = '', tipo = 'error', desaparece = tru
 
 function cleanEventTemplate(){
   eventTemplate = {
+    id: '',
     days: '20',
     name: '',
     date: '',
