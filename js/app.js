@@ -9,7 +9,7 @@ let events = [];
 
 let eventTemplate = {
   id: '',
-  days: '20',
+  days: '',
   name: '',
   date: '',
 }
@@ -46,13 +46,14 @@ function createEvent(){
     e.preventDefault();
 
     eventValidation();
-
+    
   });
 
 }
 
 function addEvent(){
   events = [...events, eventTemplate];
+  console.log(events);
   cleanEventTemplate();
 }
 
@@ -102,20 +103,28 @@ function deleteEvent(e) {
   const eventId = parseInt(e.target.parentElement.dataset.eventId);
   events = events.filter(event => event.id !== eventId);
 
-
   renderEvent();
 }
 
 
-function saveEventDays(){
+function saveEventDaysLeft(){
   
+  $inputEventDate.addEventListener('input', e => {
+    const eventDateInMs = new Date(e.target.value).getTime();
+    const currentDateInMs = new Date().getTime();
+    const eventDaysLeftInMs = eventDateInMs - currentDateInMs;
+    
+    const eventDaysLeft = Math.ceil(eventDaysLeftInMs / 1000 / 60 / 60 / 24);
+    eventTemplate.days = eventDaysLeft;
+    // console.log(eventDaysLeft);
+  });
+
 } 
 
 function addEventInfo() {
   saveInputData('#nombre-evento', 'name');
   saveInputData('#fecha', 'date');
-  saveEventDays();
-  
+  saveEventDaysLeft();
 }
 
 function showDefaultMessage(){
@@ -160,7 +169,7 @@ function showAlert(mensaje = '', elemento = '', tipo = 'error', desaparece = tru
 function cleanEventTemplate(){
   eventTemplate = {
     id: '',
-    days: '20',
+    days: '',
     name: '',
     date: '',
   }
