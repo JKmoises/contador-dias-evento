@@ -306,6 +306,7 @@ p {
   align-items: center;
   font-size: 3.5vw;
   font-weight: 900;
+  /* font-family: sans-serif; */
 }
 
 .dias-faltantes > span{

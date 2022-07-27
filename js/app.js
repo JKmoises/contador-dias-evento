@@ -20,13 +20,17 @@ function startApp() {
   createEvent();
 }
 
-function eventValidation(){
-  if ($inputEventName.value === '' && $inputEventDate.value === '') {
+function eventValidation() {
+  const { days, name, date } = eventTemplate;
+  
+  if (name === '' && date === '') {
     showAlert('Todos los campos estan vacíos, vuelve a ingresar', '#card');
-  } else if ($inputEventName.value === '') {
+  }else if (name === '') {
     showAlert('El campo de nombre del evento está vacío', '#card');
-  } else if ($inputEventDate.value === '') {
+  }else if (date === '') {
     showAlert('El campo de la fecha del evento está vacío', '#card');
+  }else if (days === 0) {
+    showAlert('No puede ingresar el dia de hoy, vuelve a ingresar', '#card');
   } else {
     cleanInputs();
     addEvent();
@@ -66,6 +70,7 @@ function renderEvent() {
     event.id = i + 1;
 
     let { id, days, name, date } = event;
+    let formatDate = new Date(date).toLocaleDateString();
 
     const $liContainer = document.createElement('li');
 
@@ -80,7 +85,7 @@ function renderEvent() {
     $liContainer.appendChild($spanOfName);
     
     const $spanOfDate = document.createElement('span');
-    $spanOfDate.textContent = date;
+    $spanOfDate.textContent = formatDate;
     $spanOfDate.classList.add('fecha');
     $liContainer.appendChild($spanOfDate);
 
@@ -122,6 +127,7 @@ function saveEventDaysLeft(){
 } 
 
 function addEventInfo() {
+  preventPastDate();
   saveInputData('#nombre-evento', 'name');
   saveInputData('#fecha', 'date');
   saveEventDaysLeft();
@@ -164,6 +170,14 @@ function showAlert(mensaje = '', elemento = '', tipo = 'error', desaparece = tru
       referencia.removeChild(alerta);
     }, 3000);
   }
+}
+
+function preventPastDate() {
+  let month = new Date().getMonth() + 1;
+  const monthTodayDate = month < 10 ? '0' + month : month;
+  const todayDate = `${new Date().getFullYear()}-${monthTodayDate}-${new Date().getDate()}`;
+  $inputEventDate.min = todayDate;
+  console.log($inputEventDate);
 }
 
 function cleanEventTemplate(){
