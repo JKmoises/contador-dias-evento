@@ -5,6 +5,8 @@ const $inputEventName = document.querySelector('#nombre-evento');
 const $inputEventDate = document.querySelector('#fecha');
 const $fragment = document.createDocumentFragment();
 
+const ls = localStorage;
+
 let events = [];
 
 let eventTemplate = {
@@ -15,9 +17,16 @@ let eventTemplate = {
 }
 
 function startApp() {
+  loadEventsStorage();  
   cleanInputs();
   addEventInfo();
   createEvent();
+}
+
+function loadEventsStorage(){
+  events = JSON.parse(localStorage.getItem('events')) || [];
+  console.log(events);
+  renderEvents();
 }
 
 function eventValidation() {
@@ -29,12 +38,12 @@ function eventValidation() {
     showAlert('El campo de nombre del evento está vacío', '#card');
   }else if (date === '') {
     showAlert('El campo de la fecha del evento está vacío', '#card');
-  }else if (days === 0) {
-    showAlert('No puede ingresar el dia de hoy, vuelve a ingresar', '#card');
+  }else if (days <= 0) {
+    showAlert('No puedes usar la fecha actual, vuelve a ingresar', '#card');
   } else {
     cleanInputs();
     addEvent();
-    renderEvent();
+    renderEvents();
   }
 }
 
@@ -43,6 +52,7 @@ function createEvent(){
   
   $btnEvent.addEventListener('click', e => {
     eventValidation();
+    
   });
 
   document.addEventListener('keydown', e => {
@@ -52,25 +62,29 @@ function createEvent(){
     eventValidation();
     
   });
-
+  
 }
 
 function addEvent(){
   events = [...events, eventTemplate];
-  console.log(events);
+  // console.log(events);
   cleanEventTemplate();
 }
 
-function renderEvent() {
+function renderEvents() {
   cleanHTML();
 
   showDefaultMessage();
-
+  
+  
   events.forEach((event, i) => {
     event.id = i + 1;
 
     let { id, days, name, date } = event;
-    let formatDate = new Date(date).toLocaleDateString();
+
+    const actualDate = addDayToDate(date);
+    
+    let formatDate = actualDate.toLocaleDateString();
 
     const $liContainer = document.createElement('li');
 
@@ -102,20 +116,25 @@ function renderEvent() {
   });
 
   $eventsContainer.appendChild($fragment);
+
+  syncStorage();
 }
 
 function deleteEvent(e) {
   const eventId = parseInt(e.target.parentElement.dataset.eventId);
   events = events.filter(event => event.id !== eventId);
-
-  renderEvent();
+  // console.log(events);
+  renderEvents();
 }
 
 
 function saveEventDaysLeft(){
   
   $inputEventDate.addEventListener('input', e => {
-    const eventDateInMs = new Date(e.target.value).getTime();
+
+    const actualDate = addDayToDate(e.target.value);
+
+    const eventDateInMs = actualDate.getTime();
     const currentDateInMs = new Date().getTime();
     const eventDaysLeftInMs = eventDateInMs - currentDateInMs;
     
@@ -134,7 +153,6 @@ function addEventInfo() {
 }
 
 function showDefaultMessage(){
-
   if (events.length === 0) {
     $eventsContainer.innerHTML = /*html*/`
       <li class="default">No hay eventos hasta el momento, ingrese uno</li>
@@ -150,6 +168,15 @@ function saveInputData(element = '',dataTosave = '') {
       // console.log(eventTemplate);
     }
   });
+}
+
+function addDayToDate(dateToFormat){
+  //* Sumando un dia a la fecha para que sea correcta 
+  const date = new Date(dateToFormat);
+  date.setDate(date.getDate() + 1);
+  // console.log(date);
+
+  return date;
 }
 
 function showAlert(mensaje = '', elemento = '', tipo = 'error', desaparece = true) {
@@ -177,7 +204,7 @@ function preventPastDate() {
   const monthTodayDate = month < 10 ? '0' + month : month;
   const todayDate = `${new Date().getFullYear()}-${monthTodayDate}-${new Date().getDate()}`;
   $inputEventDate.min = todayDate;
-  console.log($inputEventDate);
+  // console.log($inputEventDate);
 }
 
 function cleanEventTemplate(){
@@ -198,6 +225,10 @@ function cleanHTML(){
 function cleanInputs(){
   $inputEventName.value = '';
   $inputEventDate.value = '';
+}
+
+function syncStorage(){
+  localStorage.setItem('events', JSON.stringify(events));
 }
 
 
